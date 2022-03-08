@@ -3,6 +3,7 @@ import {jsx} from '@emotion/core'
 
 import * as React from 'react'
 import Tooltip from '@reach/tooltip'
+// import debounceFn from 'debounce-fn'
 import {FaSearch, FaTimes} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {useBookSearch, useRefetchBookSearchQuery} from 'utils/books'
@@ -11,14 +12,22 @@ import {BookListUL, Spinner, Input} from 'components/lib'
 import {Profiler} from 'components/profiler'
 
 function DiscoverBooksScreen() {
+  // const debouncedUseBookSearch = () => debounceFn(useBookSearch, {wait: 800})
+
   const [query, setQuery] = React.useState('')
   const [queried, setQueried] = React.useState()
   const {books, error, isLoading, isError, isSuccess} = useBookSearch(query)
   const refetchBookSearchQuery = useRefetchBookSearchQuery()
+  console.log(books)
 
   React.useEffect(() => {
     return () => refetchBookSearchQuery()
   }, [refetchBookSearchQuery])
+
+  // function handleChange(e){
+  //   setQuery(e.target.value)
+  //   debouncedUseBookSearch(query)
+  // }
 
   function handleSearchClick(event) {
     event.preventDefault()
@@ -33,6 +42,8 @@ function DiscoverBooksScreen() {
           <Input
             placeholder="Search books..."
             id="search"
+            // value={query}
+            // onChange={handleChange}
             type="search"
             css={{width: '100%'}}
           />
